@@ -1,0 +1,17 @@
+<IfModule mod_rewrite.c>
+  # リライト機能を有効にする設定
+      RewriteEngine On
+
+      RewriteCond %{HTTPS} off
+      RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [R=301,L]
+      RewriteRule ^(.*)$ /web/$1 [QSA,L]
+  # ^(.*)$ の対象文字列は .htaccess がおかれた 場所の 相対パス になる。
+  #  隣の /web/$1 は リダイレクト先のパス
+  # リダイレクト先のパスは ドメイン以降のパスで指定 http://localhost '/以降のパス'
+  #                             または、httpから指定する。
+  #                             または相対パスでも指定できる。
+  # $1 は この(.*) 後方参照された 相対パス になる。
+  # preg_matchにおける２番目の引数はデフォルトなのでを省略している感じ。 
+  #   -> preg_match('/(.*)+/','reastを含まないpathが対象文字列');
+  # マッチしたら 隣の /web/$1 [QSA,L] に インナーリダイレクトする。
+  </IfModule>
